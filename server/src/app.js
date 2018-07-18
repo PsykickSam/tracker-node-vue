@@ -2,22 +2,19 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const {sequelize} = require('./models')
+const config = require('./config/config')
+const route = require('./routes')
 
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.post('/register', (req, res) => {
-    res.send({
-        message: `Hello ${req.body.email} Registration success!`,
-    })
-})
+route(app)
 
-app.get('/status', (req, res) => {
-    res.send({
-        message: 'Hello Node',
+sequelize.sync() // {force: true} -> to delete and recraete the database
+    .then(() => {
+        app.listen(config.port)
+        console.log("Server started on PORT " + config.port)
     })
-})
-
-app.listen(process.env.PORT || 8081)
