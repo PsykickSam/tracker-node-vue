@@ -13,7 +13,7 @@ app.use(cors())
 
 route(app)
 
-sequelize.sync() // {force: true} -> to delete and recraete the database
+sequelize.sync({force: false}) // {force: true} -> to delete and recraete the database
     .then(() => {
         app.listen(config.port)
         console.log("Server started on PORT " + config.port)

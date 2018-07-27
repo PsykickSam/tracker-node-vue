@@ -10,7 +10,9 @@ import store from '@/store/store'
 
 Vue.config.productionTip = false
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconface: 'mdi'
+})
 
 sync(store, router)
 

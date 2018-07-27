@@ -1,26 +1,23 @@
 <template>
   <v-layout>
     <v-flex xs4 offset-xs4>
-      <div class="white elevation-5">
-        <v-toolbar class="light-blue accent-1" flat dense>
-          <v-toolbar-title>Register</v-toolbar-title>
-        </v-toolbar>
-
-        <div class="pl-4 pr-4 pt-2 pb-2">
+      <panel title="Register">
+        <div slot="main">
           <form name="tab-tracker-form" autocomplete="off">
-            <v-text-field v-model="email" label="Email" required></v-text-field>
+            <v-text-field type="email" v-model="email" label="Email" required></v-text-field>
             <v-text-field type="password" v-model="password" autocomplete="new-password" label="Password" required></v-text-field>
             <div v-html="error" class="err" />
             <v-btn @click="register" class="light-blue accent-1 mb-3">Register</v-btn>
           </form>
         </div>
-      </div>
+      </panel>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import AuthService from '@/services/AuthService'
+import Panel from '@/components/Panel'
 
 export default {
   data () {
@@ -46,6 +43,9 @@ export default {
         this.error = err.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>
