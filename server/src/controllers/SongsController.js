@@ -17,7 +17,7 @@ module.exports = {
             res.send(song)
         } catch (err) {
             err.status(500).send({
-                error: 'An error occured show song.'
+                error: 'An error occured show the song.'
             })
         }
     },
@@ -41,7 +41,7 @@ module.exports = {
             res.send(req.body)
         } catch (err) {
             err.status(500).send({
-                error: 'An error occured trying to update a song.'
+                error: 'An error occured trying to update the song.'
             })
         }
     }
