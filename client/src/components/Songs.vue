@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex xs6 offset-xs3>
       <panel title="Songs">
-        <v-btn @click="navigateTo({name: 'create-new-song'})" slot="action" class="light-blue darken-1" dark medium absolute right middle fab>
+        <v-btn @click="navigateTo({name: 'create-song'})" slot="action" class="light-blue darken-1" dark medium absolute right middle fab>
           <v-icon>add</v-icon>
         </v-btn>
 
@@ -17,9 +17,9 @@
                   {{ song.artist }}
                 </div>
                 <div class="song-genre">
-                  {{ song.albam }}
+                  {{ song.genre }}
                 </div>
-                <v-btn @click="navigateTo({name: 'view-song', params: {songId: song.id}})" class="light-blue accent-1 mt-2">View Song</v-btn>
+                <v-btn @click="navigateTo({name: 'view-song', params: {songId: song.id}})" class="light-blue accent-1 mt-2">View</v-btn>
               </v-flex>
 
               <v-flex xs6>

@@ -17,8 +17,8 @@
       <v-flex xs8 class="ml-2">
         <panel title="Song Structure">
           <div slot="main">
-            <v-textarea label="Lyrics" v-model="song.tab" required :rules=[required]></v-textarea>
-            <v-textarea label="Tab" v-model="song.lyrics" required :rules=[required]></v-textarea>
+            <v-textarea label="Tab" v-model="song.tab" required :rules=[required]></v-textarea>
+            <v-textarea label="Lyrics" v-model="song.lyrics" required :rules=[required]></v-textarea>
           </div>
         </panel>
 
