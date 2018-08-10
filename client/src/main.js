@@ -8,6 +8,7 @@ import router from './router'
 import { sync } from 'vuex-router-sync'
 import store from '@/store/store'
 import VueYouTubeEmbed from 'vue-youtube-embed'
+import Panel from '@/components/globals/Panel'
 
 Vue.config.productionTip = false
 
@@ -15,6 +16,8 @@ Vue.use(Vuetify, {
   iconface: 'mdi'
 })
 Vue.use(VueYouTubeEmbed)
+
+Vue.component('panel', Panel)
 
 sync(store, router)
 

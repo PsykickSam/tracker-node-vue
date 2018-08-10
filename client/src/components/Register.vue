@@ -17,7 +17,6 @@
 
 <script>
 import AuthService from '@/services/AuthService'
-import Panel from '@/components/Panel'
 
 export default {
   data () {
@@ -39,13 +38,11 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
         this.$store.dispatch('setIsLoggedIn', true)
+        this.$router.push({ name: 'songs' })
       } catch (err) {
         this.error = err.response.data.error
       }
     }
-  },
-  components: {
-    Panel
   }
 }
 </script>

@@ -15,7 +15,10 @@
                 <div class="song-genre">
                   {{ song.genre }}
                 </div>
-                <v-btn @click="navigateTo({name: 'edit-song', params: {songId: song.id}})" class="light-blue accent-1 mt-2">Edit</v-btn>
+                <v-btn :to="{name: 'edit-song', params () { return { songId: song.id } }}" class="light-blue accent-1 mt-2">Edit</v-btn>
+                <br>
+                <v-btn v-if="$store.state.isLoggedIn && !bookmark" @click="setBookmark" class="light-blue accent-1 mt-2">Set Bookmark</v-btn>
+                <v-btn v-if="$store.state.isLoggedIn && bookmark" @click="unsetBookmark" class="light-blue accent-1 mt-2">Unset Bookmark</v-btn>
               </v-flex>
 
               <v-flex xs6>
@@ -33,7 +36,9 @@
             <v-layout>
               <v-flex xs6>
                 <div class="song-youtubeId">
-                  <youtube :video-id="song.youtubeId" :player-width="600" :player-height="240" />
+                  <div>
+                    <youtube :video-id="song.youtubeId" :player-width="400" :player-height="240" />
+                  </div>
                 </div>
               </v-flex>
             </v-layout>
@@ -65,25 +70,71 @@
 <script>
 import VueYouTubeEmbed from 'vue-youtube-embed'
 import SongsService from '@/services/SongsService'
-import Panel from '@/components/Panel'
+import BookmarksService from '@/services/BookmarksService'
+import SongHistoryService from '@/services/SongHistoryService'
+import {mapState} from 'vuex'
 
 export default {
   data () {
     return {
-      song: {}
+      song: {},
+      bookmark: null
     }
   },
+  computed: {
+    ...mapState([
+      'isLoggedIn',
+      'user',
+      'route'
+    ])
+  },
   methods: {
-    navigateTo (route) {
-      this.$router.push(route)
+    async setBookmark () {
+      try {
+        this.bookmark = (await BookmarksService.add({
+          songId: this.song.id
+        })).data
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async unsetBookmark () {
+      try {
+        await BookmarksService.remove(this.bookmark.id)
+        this.bookmark = null
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
+  watch: {
+    async song () {
+      if (this.isLoggedIn) {
+        try {
+          const bookmarks = (await BookmarksService.index({
+            songId: this.song.id
+          })).data
+
+          if (bookmarks.length) {
+            this.bookmark = bookmarks[0]
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }
   },
   async mounted () {
-    const songId = this.$store.state.route.params.songId
+    const songId = this.route.params.songId
     this.song = (await SongsService.show(songId)).data
+
+    if (this.isLoggedIn) {
+      SongHistoryService.add({
+        songId: songId
+      })
+    }
   },
   components: {
-    Panel,
     VueYouTubeEmbed
   }
 }
@@ -113,9 +164,16 @@ export default {
   margin: 0 auto;
 }
 
+.song-youtubeId div {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 textarea {
   width: 100%;
-  font-size: 13px;
+  font-size: 12px;
   font-family: monospace;
   border: none;
   height: 500px;
